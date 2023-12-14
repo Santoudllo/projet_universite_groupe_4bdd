@@ -1,3 +1,5 @@
+from model.EnseignantM import Enseignant
+
 class ProgrammeEtude:
 
     def __init__(self) -> None:
@@ -5,7 +7,7 @@ class ProgrammeEtude:
         self.__id : int = None
         self.__nom : str = None
         self.__idCours : int = None
-        self.__idEnseignant : int = None    
+        self.___matriculeEns : Enseignant = None    
 
     def setId(self, id) -> int:
         
@@ -31,10 +33,10 @@ class ProgrammeEtude:
         
         return self.__idCours
     
-    def setIdEnseignant(self, idEnseignant) -> int:
+    def setIdEnseignant(self, matriculeEns : Enseignant):
         
-        self.__idEnseignant = idEnseignant
+        self.___matriculeEns = matriculeEns
     
-    def getIdEnseignant(self) -> int:
+    def getIdEnseignant(self) -> Enseignant:
         
-        return self.__idEnseignant
+        return self.___matriculeEns
