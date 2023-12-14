@@ -10,10 +10,30 @@ class ProgrammeEtudeDAO(ModelDAO):
         self.cursor = params.cursor()
 
     def insert(self, objIns) -> int:
-        pass
+        try:
+            self.cursor.executemany("INSERT INTO programme_etude (id, nom, idcours, idenseignant)")
+            self.cursor.executemany("VALUES (%s, %s, %s, %s)", objIns)
+            return self.cursor.rowcount
+        except Exception as e:
+            print(f"Erreur_ProgrammeEtudeDAO.insert() ::: {e}")
+            self.cursor.connection.rollback()
+            return 0
+        
+        finally:
+            self.cursor.close()
 
     def insertList(self, objInsList) -> int:
-        pass
+        try:
+            self.cursor.executemany("INSERT INTO programme_etude (id, nom, idcours, idenseignant)")
+            self.cursor.executemany("VALUES (%s, %s, %s, %s)", objInsList)
+            return self.cursor.rowcount
+        except Exception as e:
+            print(f"Erreur_ProgrammeEtudeDAO.insertList() ::: {e}")
+            self.cursor.connection.rollback()
+            return 0
+        
+        finally:
+            self.cursor.close()
 
     def findOne(self, findKey) -> object:
         pass

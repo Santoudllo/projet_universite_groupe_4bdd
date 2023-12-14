@@ -11,14 +11,13 @@ class EnseignantDAO(ModelDAO):
 
     def insert(self, objIns) -> int:
         try:
-            query = "INSERT INTO Enseignant (id, nom, prenom, email, role)"
-            self.cursor.execute(query, (objIns.id, objIns.nom, objIns.prenom, objIns.email, objIns.role))
-            self.cursor.commit()
-            return self.cursor.rowcount if self.cursor.rowcount!= 0 else 0
-        
+            self.cursor.executemany("INSERT INTO enseignant (id, specialite, matriculens, cours_enseignees)")
+            self.cursor.executemany("VALUES (%s, %s, %s, %s)", objIns)
+            return self.cursor.rowcount
         except Exception as e:
-            print(f'Erreur_EnseignantDAO.insert() ::: {e}')
+            print(f"Erreur_EnseignantDAO.insert() ::: {e}")
             self.cursor.connection.rollback()
+            return 0
         
         finally:
             self.cursor.close()
@@ -26,71 +25,36 @@ class EnseignantDAO(ModelDAO):
 
     def insertList(self, objInsList) -> int:
         try:
-            query = "INSERT INTO Enseignant (id, nom, prenom, email, role) VALUES (%s, %s, %s, %s, %s)"
-            self.cursor.executemany(query, [(objIns.id, objIns.nom, objIns.prenom, objIns.email, objIns.role) for objIns in objInsList])
-            self.cursor.commit()
-            return self.cursor.rowcount if self.cursor.rowcount!= 0 else 0
-        
+            self.cursor.executemany("INSERT INTO enseignant (id, specialite, matriculeens, cours_enseignees)")
+            self.cursor.executemany("VALUES (%s, %s, %s, %s)", objInsList)
+            return self.cursor.rowcount
         except Exception as e:
-            print(f'Erreur_EnseignantDAO.insertList() ::: {e}')
-            # if commit return rollback
+            print(f"Erreur_EnseignantDAO.insertList() ::: {e}")
             self.cursor.connection.rollback()
+            return 0
         
         finally:
             self.cursor.close()
 
-
     def findOne(self, findKey) -> object:
         try:
-            query = "SELECT * FROM Enseignant WHERE id = %s"
-            self.cursor.execute(query, (findKey,))
-            res = self.cursor.fetchone()
-            
-            if res is not None:
-                ens = Enseignant()
-                ens.setId(res[0])
-                ens.setNom(res[1])
-                ens.setPrenom(res[2])
-                ens.setEmail(res[3])
-                ens.setRole(res[4])
-                return ens
-            
-            else:
-                return None
-        
+            self.cursor.execute(f"SELECT * FROM enseignant WHERE matriculeens = {findKey}")
+            return self.cursor.fetchone()
         except Exception as e:
-            print(f'Erreur_EnseignantDAO.findOne() ::: {e}')
-            # if get return none
+            print(f"Erreur_EnseignantDAO.findOne() ::: {e}")
+            self.cursor.connection.rollback()
             return None
         
         finally:
             self.cursor.close()
-    
 
     def findAll(self) -> list:
         try:
-            query = "SELECT * FROM Enseignant"
-            self.cursor.execute(query)
-            res = self.cursor.fetchall()
-            list_ens = []
-            if res is not None:
-                
-                for row in res:
-                    ens = Enseignant()
-                    ens.setId(row[0])
-                    ens.setNom(row[1])
-                    ens.setPrenom(row[2])
-                    ens.setEmail(row[3])
-                    ens.setRole(row[4])
-                    list_ens.append(ens)
-            
-                return list_ens
-            else:
-                return None
-        
+            self.cursor.execute("SELECT * FROM enseignant")
+            return self.cursor.fetchall()
         except Exception as e:
-            print(f'Erreur_EnseignantDAO.findAll() ::: {e}')
-            # if get return none
+            print(f"Erreur_EnseignantDAO.findAll() ::: {e}")
+            self.cursor.connection.rollback()
             return None
         
         finally:
@@ -99,22 +63,11 @@ class EnseignantDAO(ModelDAO):
 
     def findAllByOne(self, findKey) -> list:
         try:
-            query = "SELECT * FROM Enseignant WHERE id = %s"
-            self.cursor.execute(query, (findKey,))
-            res = self.cursor.fetchone()
-        
-            if res is not None:
-                ens = Enseignant()
-                ens.setId(res[0])
-                ens.setNom(res[1])
-                ens.setPrenom(res[2])
-                ens.setEmail(res[3])
-                ens.setRole(res[4])
-                return [ens]
-            
+            self.cursor.execute(f"SELECT * FROM enseignant WHERE matriculeens = {findKey}")
+            return self.cursor.fetchall()
         except Exception as e:
-            print(f'Erreur_EnseignantDAO.findAllByOne() ::: {e}')
-            # if get return none
+            print(f"Erreur_EnseignantDAO.findAllByOne() ::: {e}")
+            self.cursor.connection.rollback()
             return None
         
         finally:
@@ -122,57 +75,37 @@ class EnseignantDAO(ModelDAO):
 
     def findAllByLike(self, findKey) -> list:
         try:
-            query = "SELECT * FROM Enseignant WHERE id LIKE %s"
-            self.cursor.execute(query, (findKey))
-            res = self.cursor.fetchall()
-            list_ens = []
-            if res is not None:
-                
-                for row in res:
-                    ens = Enseignant()
-                    ens.setId(row[0])
-                    ens.setNom(row[1])
-                    ens.setPrenom(row[2])
-                    ens.setEmail(row[3])
-                    ens.setRole(row[4])
-                    list_ens.append(ens)
-            
-                return list_ens
-            
+            self.cursor.execute(f"SELECT * FROM enseignant WHERE matriculeens LIKE '%{findKey}%'")
+            return self.cursor.fetchall()
         except Exception as e:
-            print(f'Erreur_EnseignantDAO.findAllByLike() ::: {e}')
-            # if get return none
+            print(f"Erreur_EnseignantDAO.findAllByLike() ::: {e}")
+            self.cursor.connection.rollback()
             return None
         
         finally:
             self.cursor.close()
 
+
     def update(self, cleAnc, objUpd) -> int:
         try:
-            query = "UPDATE Enseignant SET nom = %s, prenom = %s, email = %s, role = %s WHERE id = %s"
-            self.cursor.execute(query, (objUpd.nom, objUpd.prenom, objUpd.email, objUpd.role, cleAnc))
-            self.cursor.commit()
-            return self.cursor.rowcount if self.cursor.rowcount!= 0 else 0
-        
+            self.cursor.execute(f"UPDATE enseignant SET {objUpd} WHERE matriculeens = {cleAnc}")
+            return self.cursor.rowcount
         except Exception as e:
-            print(f'Erreur_EnseignantDAO.update() ::: {e}')
-            # if commit return rollback
+            print(f"Erreur_EnseignantDAO.update() ::: {e}")
             self.cursor.connection.rollback()
+            return 0
         
         finally:
             self.cursor.close()
 
     def deleteOne(self, cleSup) -> int:
         try:
-            query = "DELETE FROM Enseignant WHERE id = %s"
-            self.cursor.execute(query, (cleSup,))
-            self.cursor.commit()
-            return self.cursor.rowcount if self.cursor.rowcount!= 0 else 0
-        
+            self.cursor.execute(f"DELETE FROM enseignant WHERE matriculeens = {cleSup}")
+            return self.cursor.rowcount
         except Exception as e:
-            print(f'Erreur_EnseignantDAO.deleteOne() ::: {e}')
-            # if commit return rollback
+            print(f"Erreur_EnseignantDAO.deleteOne() ::: {e}")
             self.cursor.connection.rollback()
+            return 0
         
         finally:
             self.cursor.close()
