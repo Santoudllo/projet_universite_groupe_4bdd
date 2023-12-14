@@ -157,3 +157,44 @@ class Membre:
             return None
         finally:
             mDAO.close()
+    
+    @staticmethod
+    def attributePrivilege(privileges : str, tables : str, role : str) -> int:
+        try:
+            mDAO = MembreDAO()
+            sys: int = mDAO.attribuerPriviliege(privileges, tables, role)
+            print("sys:",sys)
+            return sys
+        except Exception as e:
+            print(f'Erreur_membreC.attributePrivilege() ::: {e}')
+            return None
+        finally:
+            mDAO.close()
+    
+    @staticmethod
+    def attributeRole(usr : str, roles : str) -> int:
+        try:
+            mDAO = MembreDAO()
+            sys: int = mDAO.attribuerRole(usr, roles)
+            print("sys:",sys)
+            return sys
+        except Exception as e:
+            print(f'Erreur_membreC.attributeRole() ::: {e}')
+            return None
+        finally:
+            mDAO.close()
+    
+    @staticmethod
+    def attributeUser(usr : str, roles : str) -> int:
+        try:
+            mDAO = MembreDAO()
+            sys: int = mDAO.attribuerRole(usr, roles)
+            print("sys:",sys)
+            return sys
+        except Exception as e:
+            print(f'Erreur_membreC.attributeRole() ::: {e}')
+            return None
+        finally:
+            mDAO.close()
+    
+    
