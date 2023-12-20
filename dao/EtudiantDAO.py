@@ -1,4 +1,4 @@
-from dao import ModelDAO
+from dao.ModelDAO import ModelDAO
 from model.EtudiantM import Etudiant
 
 
@@ -11,12 +11,16 @@ class EtudiantDAO(ModelDAO):
 
     def insert(self, objIns) -> int:
         try:
-            self.cursor.execute("INSERT INTO etudiant (id, matriculeetu, notes")
-            self.cursor.execute("VALUES (%s, %s, %s)", (objIns.getId(), objIns.getMatriculeEtu(), objIns.getNotes()))
-            return self.cursor.rowcount
+
+            query = "INSERT INTO etudiant (id, matriculeetu, notes) VALUES (%s, %s, %s)"
+            self.cursor.execute(query, (objIns.getId(), objIns.getMatricule(), objIns.getNotes(),))
+            self.cursor.commit()
+            return self.cursor.rowcount if self.cursor.rowcount != 0 else 0
+
+
         except Exception as e:
-            print(e)
-            return 0
+            print(f'Erreur_MembreDAO.insert() ::: {e}')
+            self.cursor.connection.rollback()
         finally:
             self.cursor.close()
 

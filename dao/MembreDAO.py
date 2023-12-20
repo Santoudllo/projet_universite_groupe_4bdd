@@ -1,4 +1,4 @@
-from dao import ModelDAO
+from dao.ModelDAO import ModelDAO
 from model.MembreM import Membre
 
 
@@ -11,9 +11,9 @@ class MembreDAO(ModelDAO):
 
     def insert(self, objIns) -> int:
         try:
-            query = "INSERT INTO Membre (id, nom, prenom, email, role)"
-            self.cursor.execute(query, (objIns.id, objIns.nom, objIns.prenom, objIns.email, objIns.role))
-            self.cursor.commit()
+            query = "INSERT INTO Membre (id, nom, prenom, email, role) VALUES (%s, %s, %s, %s, %s)"
+            self.cursor.execute(query, (objIns.getId(), objIns.getNom(), objIns.getPrenom(), objIns.getEmail(), objIns.getRole())) 
+            self.cursor.connection.commit()
             return self.cursor.rowcount if self.cursor.rowcount != 0 else 0
 
         except Exception as e:
@@ -124,7 +124,7 @@ class MembreDAO(ModelDAO):
             self.cursor.execute(query, (findKey))
             res = self.cursor.fetchall()
             list_membre = []
-            if res is not None:
+            if res:
                 
                 for row in res:
                     membre = Membre()
@@ -136,7 +136,8 @@ class MembreDAO(ModelDAO):
                     list_membre.append(membre)
             
                 return list_membre
-            
+            else:
+                return None
         except Exception as e:
             print(f'Erreur_MembreDAO.findAllByLike() ::: {e}')
             # if get return none

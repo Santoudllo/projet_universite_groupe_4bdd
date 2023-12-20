@@ -1,8 +1,5 @@
-postgreSQLAccess :
-  database_name : postgres
-  host : db.rxogkfbkomhhenndivzb.supabase.co
-  port : 5432
-  pwd : FVeC5pK5K6Mtm64m
-    pwd1 : 
-  user : postgres
-    usr1 : 
+database_name : "postgres"
+host : "db.rxogkfbkomhhenndivzb.supabase.co"
+port : "5432"
+pwd : "FVeC5pK5K6Mtm64m"
+user : "postgres"

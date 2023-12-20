@@ -1,10 +1,10 @@
-from dao.MembreDAO import *
+from dao.MembreDAO import MembreDAO
 from model import MembreM
 
-class Membre:
+class MembreController:
 
     @staticmethod
-    def insertOne(id_membre, nom, prenom, email, role) -> object:
+    def insert(id_membre, nom, prenom, email, role) -> object:
         try:
             mM = MembreM.Membre()
             mM.setId(id_membre)
@@ -12,8 +12,7 @@ class Membre:
             mM.setPrenom(prenom)
             mM.setEmail(email)
             mM.setRole(role)
-            mDAO = MembreDAO()
-            res_m = mDAO.insert(mM)
+            res_m = MembreDAO().insert(mM)
             if res_m!= 0:
                 return "AJOUT DU MEMBRE REUSSI"
             return 'ERROR'

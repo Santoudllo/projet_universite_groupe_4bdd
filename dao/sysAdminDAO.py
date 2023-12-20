@@ -1,4 +1,4 @@
-from dao import ModelDAO
+from dao.ModelDAO import ModelDAO
 
 class sysadmin(ModelDAO.modeleDAO):
 
@@ -84,3 +84,5 @@ class sysadmin(ModelDAO.modeleDAO):
             self.cur.connection.rollback()
         finally:
             self.cur.close()
+
+    

@@ -48,7 +48,7 @@ class CoursDAO(ModelDAO):
             self.cursor.execute(query, (findKey,))
             res = self.cursor.fetchone()
             
-            if res is not None:
+            if res:
                 cours = Cours()
                 cours.setIdCours(res[0])
                 cours.setTitre(res[1])

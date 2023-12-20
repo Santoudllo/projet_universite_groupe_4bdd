@@ -1,11 +1,16 @@
-from MembreM import Membre
-
-class Etudiant(Membre):
+class Etudiant():
 
     def __init__(self) -> None:
-        super().__init__() # __super__ take all the properties of the parent class
+        
+        self.__id : int = None
         self.__matriculeEtu: str = None
         self.__notes: list = []
+
+    def setId(self, id) -> int:
+        self.__id = id
+    
+    def getId(self) -> int:
+        return self.__id
 
     def setMatricule(self, matriculeEtu) -> str:
         self.__matriculeEtu = matriculeEtu
