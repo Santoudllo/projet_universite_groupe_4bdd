@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 CORS(app, resources={fr"/api/uvy/membre/*": {"origins": "*"}})
 
-LOG_FILE_PATH = 'projet_universite_groupe_4bdd/utils/logs.json'
+LOG_FILE_PATH = 'utils/logs.json'
 
 def log_request_info(route_function):
     @wraps(route_function)

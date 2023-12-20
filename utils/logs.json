@@ -1,0 +1,12 @@
+[
+  {
+    "timestamp": "2023-12-21 00:01:34",
+    "route": "/api/uvy/membre/create_membre_list",
+    "method": "POST",
+    "ip_address": "127.0.0.1",
+    "execution_time": 0.055001,
+    "response": {
+      "response": "LIST ADDED"
+    }
+  }
+]
