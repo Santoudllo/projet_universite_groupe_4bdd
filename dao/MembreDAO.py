@@ -24,10 +24,12 @@ class MembreDAO(ModelDAO):
             self.cursor.close()
 
     def insertList(self, objInsList) -> int:
+        print(objInsList)
         try:
+            print('TEst1')
             query = "INSERT INTO Membre (id, nom, prenom, email, role) VALUES (%s, %s, %s, %s, %s)"
-            self.cursor.executemany(query, [(objIns.id, objIns.nom, objIns.prenom, objIns.email, objIns.role) for objIns in objInsList])
-            self.cursor.commit()
+            self.cursor.executemany(query, [(objIns.getId(), objIns.getNom(), objIns.getPrenom(), objIns.getEmail(), objIns.getRole()) for objIns in objInsList])
+            self.cursor.connection.commit()
             return self.cursor.rowcount if self.cursor.rowcount!= 0 else 0
         
         except Exception as e:
@@ -88,7 +90,6 @@ class MembreDAO(ModelDAO):
         
         except Exception as e:
             print(f'Erreur_MembreDAO.findAll() ::: {e}')
-            # if get return none
             return None
         
         finally:
@@ -116,7 +117,7 @@ class MembreDAO(ModelDAO):
             return None
         
         finally:
-            self.cursor.close()
+            self.cursor.connection.close()
 
     def findAllByLike(self, findKey) -> list:
         try:
@@ -150,8 +151,8 @@ class MembreDAO(ModelDAO):
     def update(self, cleAnc, objUpd) -> int:
         try:
             query = "UPDATE Membre SET nom = %s, prenom = %s, email = %s, role = %s WHERE id = %s"
-            self.cursor.execute(query, (objUpd.nom, objUpd.prenom, objUpd.email, objUpd.role, cleAnc))
-            self.cursor.commit()
+            self.cursor.execute(query, (objUpd.getNom(), objUpd.getPrenom(), objUpd.getEmail(), objUpd.getRole(), cleAnc))
+            self.cursor.connection.commit()
             return self.cursor.rowcount if self.cursor.rowcount!= 0 else 0
         
         except Exception as e:
@@ -164,9 +165,10 @@ class MembreDAO(ModelDAO):
 
     def deleteOne(self, cleSup) -> int:
         try:
+            print('Test2')
             query = "DELETE FROM Membre WHERE id = %s"
             self.cursor.execute(query, (cleSup,))
-            self.cursor.commit()
+            self.cursor.connection.commit()
             return self.cursor.rowcount if self.cursor.rowcount!= 0 else 0
         
         except Exception as e:
