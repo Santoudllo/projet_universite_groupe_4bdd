@@ -1,84 +1,26 @@
 from dao.MembreDAO import *
-from model.MembreM import Membre
+from model import MembreM
 
 class Membre:
+
     @staticmethod
-    def createUser(pwd, user):
-        """
-        Créer un nouvel utilisateur.
-        @param pwd: Mot de passe de l'utilisateur.
-        @param usr: Nom d'utilisateur.
-        @return: Statut de la création de l'utilisateur.
-        """
+    def insertOne(id_membre, nom, prenom, email, role) -> object:
         try:
+            mM = MembreM.Membre()
+            mM.setId(id_membre)
+            mM.setNom(nom)
+            mM.setPrenom(prenom)
+            mM.setEmail(email)
+            mM.setRole(role)
             mDAO = MembreDAO()
-            sys: int = mDAO.createUser(pwd, user)
-            print("sys:",sys)
-            if sys==0 :
-                return "ERROR"
-            return "CREATION D'UN NOUVEAU USER AVEC SUCCES"
+            res_m = mDAO.insert(mM)
+            if res_m!= 0:
+                return "AJOUT DU MEMBRE REUSSI"
+            return 'ERROR'
         except Exception as e:
-            print(f'Erreur_membreC.createUser() ::: {e}')
-            return None
-        
-    @staticmethod
-    def createRole(role):
-        """
-        Créer un nouveau rôle.
-        @param role: Nom du rôle à créer.
-        @return: Statut de la création du rôle.
-        """
-        try:
-            mDAO = MembreDAO()
-            sys: int = mDAO.createRole(role)
-            print("sys:",sys)
-            if sys==0 :
-                return "ERROR"
-            return "CREATION D'UN NOUVEAU USER AVEC SUCCES"
-        except Exception as e:
-            print(f'Erreur_membreC.createRole() ::: {e}')
-            return None
-        
-    @staticmethod
-    def privilege_Role(privileges, tables, roles):
-        """
-        Attribuer des privilèges à un rôle.
-        @param privileges: Liste des privilèges à attribuer.
-        @param tables: Liste des tables concernées.
-        @param roles: Liste des rôles auxquels attribuer les privilèges.
-        @return: Statut de l'attribution des privilèges.
-        """
-        try:
-            mDAO = MembreDAO()
-            sys: int = mDAO.attribuerPriviliege(privileges, tables, roles)
-            print("sys:",sys)
-            if sys==0 :
-                return "ERROR"
-            return "ATTRIBUTION DE(S) PRIVILEGE(S) A UN ROLE AVEC SUCCES"
-        except Exception as e:
-            print(f'Erreur_membreC.privilege_Role() ::: {e}')
-            return None
+            print(f"Erreur_membreC.insertOne() ::: {e}")
+        return None
     
-    @staticmethod
-    def attribution_Role(usr, roles):
-        """
-        Attribuer des rôles à un utilisateur.
-        @param usr: Nom de l'utilisateur.
-        @param roles: Liste des rôles à attribuer à l'utilisateur.
-        @return: Statut de l'attribution des rôles.
-        """
-        try:
-            mDAO = MembreDAO()
-            sys: int = mDAO.attribuerRole(usr, roles)
-            print("sys:",sys)
-            if sys==0 :
-                return "ERROR"
-            return "ATTRIBUTION DE(S) ROLE(S) A UN USER AVEC SUCCES"
-        except Exception as e:
-            print(f'Erreur_membreC.privilege_Role() ::: {e}')
-            return None
-        finally:
-            mDAO.close()
 
     @staticmethod
     def findOne(findKey) -> object:
