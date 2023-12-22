@@ -1,2 +1,3 @@
 # projet_universite_groupe_4bdd
-le groupe 4 pour l'université de Washington et du Département de Computer cience UW-CSE
+le groupe 4 pour l'université de Washington et du Département de Computer cience UW-CSE.
+Nous élaborons une solution de gestion sur mesure pour le Département d'Informatique de l'Université de Washington (UW-CSE), visant à renforcer la coordination et la communication entre les entités. Axée sur l'optimisation des ressources humaines et académiques, cette solution personnalisée, intégrant une base de données robuste, facilitera la progression académique des étudiants, le conseil des professeurs et la gestion des cours, tout en préservant l'efficacité des opérations existantes.
